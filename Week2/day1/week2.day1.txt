@@ -1,0 +1,208 @@
+String :
+
+-------------------------------------------------------------------------------------------------
+Aspect 		| String nameOne = "Testleaf"; 	      | String nameTwo = new String("Testleaf"); | 
+--------------- | ------------------------------------|-------------------------------------------
+Memory area 	| String Constant Pool (SCP)	      | Heap memory (with optional pool intern)  |
+Reference 	| Points to a shared, pooled object   | Creates a new object in the heap  	 |
+Duplication     | Reuses if the same value already exists| Always creates a new object unless interned|
+Efficient? 	| ✅ Yes – less memory usage 	      | ❌ No – more memory used unnecessarily	 | 
+--------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------
+Aspect                       | String Constant Pool (SCP)                 	| Heap Memory                      	       	|
+---                          | ---                                       	| ---                              
+Storage                      | Dedicated area for unique string literals. 	| General storage for all objects.  		|
+Duplication                  | No duplicates allowed (reuses existing strings). | Duplicates allowed (new objects created).  	|
+Memory Efficiency            | ✅ Highly efficient (shared references).  	| ❌ Less efficient (multiple copies possible).	|	  
+Access                       | Implicit for literals or via `intern()`.   	| Explicit via `new` keyword.			|
+Mutability                   | Immutable (safe for reuse).               	| Immutable (but stored as separate objects).	| 
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+Memory Area    | Purpose                         | Key Details                          		| Managed By	     |
+--------------|----------------------------------|--------------------------------------		|--------------------
+Heap          | Stores all objects               | - Young/Old generations, GC cleans unused objects	| Garbage Collector  |
+Stack         | Stores method data per thread    | - Fixed size, Local variables   			| Thread lifecycle   |
+Method Area   | Stores class info & static vars  | - Was PermGen, Now Metaspace    			| JVM/GC (rarely)    |
+PC Register   | Tracks thread execution point    | - 1 per thread                      			| JVM		     |
+------------------------------------------------------------------------------------------------------------------------------
+
+
+✅ What Does "Immutable String" Mean?
+
+In Java, Strings are immutable, meaning once a String object is created, its value cannot be changed.
+
+If you try to modify it, a new object is created in memory instead of changing the original one.
+
+🔸 Why Are Strings Immutable?
+
+A)For security: Especially in use cases like URLs, usernames, passwords.
+
+B)For thread safety: Immutable objects are naturally thread-safe.
+
+C)To allow string pooling and memory optimization
+
+
+
+Summary :
+
+
+String is immutable → The content of a String cannot be changed.
+
+But the reference variable (name) can be reassigned to another string.
+
+This doesn’t violate immutability — because you’re not modifying the original object, just pointing your variable to a new one.
+
+
+*************************************************
+
+
+
+Tool 	  | Scriptless |      Supports 	    | Cloud Option | Notes
+-----------------------------------------------------------------------------
+Katalon   | ✅ | Web, Mobile, API	 	| ✅ | All-in-one solution
+Ranorex   | ✅ | Web, Desktop, Mobile, API 	| ❌ | Strong desktop support
+Tosca 	  | ✅ | Web, Desktop, Mobile, API 	| ✅ | Enterprise-grade tool
+Leapwork  | ✅ | Web, Desktop, API	   	| ✅ | Flow-based no-code testing
+ACCELQ	  | ✅ | Web, Mobile, API		| ✅ | AI + cloud automation
+TestSigma | ✅ | Web, Mobile, API		| ✅ | Tests in natural English
+--------------------------------------------------------------------------------
+
+🔹 What is Maven?
+
+Maven is a build automation tool used primarily for Java projects. It helps manage:
+
+A)Project structure
+
+B)Dependencies (libraries & plugins)
+
+C)Build process (compile, test, package, etc.)
+
+*****************************************
+
+1)Selenium: History
+
+
+
+Key Milestones in Selenium's History
+
+| Year	   | Milestone                                        | Key Contributors            |
+|----------|--------------------------------------------------|-----------------------------|
+| 2004     | Selenium Core developed                          | Jason Huggins               |
+| 2005     | Selenium RC introduced                           | Paul Hammant                |
+| 2006     | WebDriver created                                | Simon Stewart               |
+| 2011     | Selenium 2 released (WebDriver + RC)             | Selenium Community          |
+| 2016     | Selenium 3 released                              | Selenium Community          |
+| 2021     | Selenium 4 with W3C compliance and new features  | Selenium Project Contributors|
+
+
+2)Selenium’s Ecosystem
+
+
+- Selenium WebDriver:
+  - Primary tool for browser automation.
+  - Allows script execution in multiple languages.
+
+- Selenium Grid:
+  - Enables parallel execution of tests across different browsers, OS, and devices.
+
+
+
+- Selenium IDE:
+  - Record-and-playback tool for beginners in automation.
+  - Best for prototyping test cases.
+
+
+
+
+
+
+
+
+
+
+
+Diagram:
++-------------+                        +-----------------+                       +----------------+
+| Your Code   |  ---> Request -->        | Browser Driver | ---> Request -->		  | Browser        |
+| (WebDriver) |                          | (e.g., Chrome) |                      	| (e.g., Chrome) |
++-------------+                        +-----------------+                       +----------------+
+      |                                         ^
+      | Port (e.g., 12345)                     	|  Port (e.g., 9222)
+      |                                         |
++-------------+                        +-----------------+            		      +----------------+
+| OS          |                	       | DevTools/HTTP   |           		    	| Native APIs    |
+| (Allocates) |             	         | Protocol        |             	 		  |                |
++-------------+               	       +-----------------+            	         +----------------+
+
+
+
+	1.Port Assignment:
+		--The operating system assigns a free port (e.g., 12345) to the browser driver for communication with WebDriver.
+		--The browser itself may use another port (e.g., 9222) for internal DevTools Protocol communication.
+	2.Session Handling:
+		--WebDriver communicates with the browser driver using the selected port for the entire session.
+	3.Custom Ports (Optional):
+		--You can specify the port explicitly when starting the browser driver. For example: 
+					chromedriver --port=9515
+
+
+
+
+
+
+
+
+
+
+
+### SELENIUM WEBDRIVER SESSION CREATION AND PORT SELECTION
+
+When Selenium WebDriver starts a new session, it interacts with a browser driver (like ChromeDriver for Chrome, GeckoDriver for Firefox, etc.). These browser drivers communicate with the browser over a local network connection using a specific port. 
+
+	1.WebDriver Initialization:
+		--When you create a new WebDriver instance (e.g., new ChromeDriver() in Java), the WebDriver communicates with the corresponding browser driver.
+
+	2.Port Selection by the Browser Driver:
+		--The browser driver (e.g., ChromeDriver) looks for an available port on the local machine.
+It starts a WebDriver server process on an unused port. Typically, this port is randomly chosen by the operating system unless explicitly specified.
+
+	3.Communication Setup:
+		--WebDriver establishes a session by sending a request to this port. The browser driver handles this request and starts the actual browser instance.
+    
+	4.Session Creation:
+	
+		--The browser driver communicates with the browser via DevTools Protocol (for Chrome/Edge) or Marionette (for Firefox) using the selected port.
+
+	5.Interaction:
+		--During the session, all commands (e.g., open a URL, click a button) are sent to the browser driver via the chosen port.
+
+
+https://repo1.maven.org/maven2
+https://mvnrepository.com/
+
+
+
+ Fun Facts About Selenium
+- Selenium is often referred to as the “gold standard” of web testing automation.
+- It has inspired several other tools and frameworks like Appium for mobile testing.
+- Despite being an open-source tool, it has been adopted by major organizations worldwide, including Google, Facebook, and Microsoft.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
