@@ -1,0 +1,184 @@
+Tags----------->
+In the Document Object Model (DOM) of a webpage, tags (also known as HTML elements) are the building blocks that define the structure and content of the webpage. Each tag has a specific purpose and contributes to how the content is displayed, how the webpage behaves, and how it is interpreted by web browsers and search engines. Below are some common HTML tags and their purposes:
+
+1. <html>
+Purpose: The root element that encapsulates the entire content of the HTML document.
+Use: Defines the beginning and end of an HTML document.
+
+2. <head>
+Purpose: Contains meta-information about the document, such as the title, character set, links to CSS, and other metadata.
+Use: Provides information that is not displayed directly on the webpage.
+
+3. <title>
+Purpose: Sets the title of the webpage, which appears on the browser tab.
+Use: Important for SEO and user experience.
+
+4. <meta>
+Purpose: Provides metadata such as character encoding (charset), author of the document, and viewport settings for responsive design.
+Use: Helps search engines, browsers, and social media platforms understand the content and configuration of the page.
+
+5. <link>
+Purpose: Links to external resources, such as stylesheets (CSS files).
+Use: Commonly used to include CSS files that style the webpage.
+
+6. <script>
+Purpose: Embeds or references JavaScript code that adds interactivity and dynamic behavior to the webpage.
+Use: Can be placed in the <head> or at the end of the <body>.
+
+7. <body>
+Purpose: Contains the content of the webpage that is visible to users, including text, images, links, and other media.
+Use: All visible content and most interactive elements are placed within this tag.
+
+8. <header>
+Purpose: Represents introductory content, typically containing navigational links or introductory information.
+Use: Often used at the top of the page or section, containing the site's logo, navigation, or title.
+
+9. <nav>
+Purpose: Contains the navigation links for the website.
+Use: Typically used to house the main navigation menu.
+
+10. <main>
+Purpose: Represents the main content of the webpage, unique to the page’s purpose.
+Use: Used to improve accessibility and structure by isolating the primary content.
+
+11. <section>
+Purpose: Defines a section in a document, used for grouping related content.
+Use: Useful for dividing content into logical sections, each with a specific topic.
+
+12. <article>
+Purpose: Represents a self-contained piece of content, such as a blog post, news article, or forum post.
+Use: Enhances the semantic structure, particularly useful for content syndication and SEO.
+
+13. <aside>
+Purpose: Contains content that is tangentially related to the main content, such as sidebars, callouts, or advertisements.
+Use: Used to present additional information without interrupting the main content flow.
+
+14. <footer>
+Purpose: Represents the footer of a document or section, typically containing copyright information, links, and other summary content.
+Use: Used at the bottom of pages or sections.
+
+15. <h1> to <h6>
+Purpose: Define headings, with <h1> being the most important and <h6> the least important.
+Use: Structure content hierarchically, helping both users and search engines understand the content.
+
+16. <p>
+Purpose: Represents a paragraph of text.
+Use: Used to separate blocks of text into readable sections.
+
+17. <a>
+Purpose: Defines a hyperlink, which links to another page or resource.
+Use: Allows users to navigate to other webpages, documents, or sections within the same page.
+
+18. <img>
+Purpose: Embeds an image into the webpage.
+Use: Used to display images, requiring the src attribute to specify the image source.
+
+19. <ul>, <ol>, and <li>
+Purpose: <ul> creates an unordered list, <ol> creates an ordered list, and <li> represents a list item.
+Use: Used to present lists of items, such as bullet points (<ul>) or numbered lists (<ol>).
+
+20. <div>
+Purpose: A generic container for grouping and styling content.
+Use: Often used with CSS to apply styles or JavaScript for manipulation.
+
+21. <span>
+Purpose: A generic inline container for styling or scripting.
+Use: Used to apply styles or behaviors to specific parts of text without affecting layout.
+
+22. <form>
+Purpose: Creates a form for user input.
+Use: Used to collect and submit data, such as through input fields, checkboxes, and buttons.
+
+23. <input>, <textarea>, <button>
+Purpose: Various form elements for user input (<input> for text fields, <textarea> for multi-line text, <button> for clickable buttons).
+Use: Collect user data and interact with the webpage.
+
+24. <table>, <tr>, <td>, <th>
+Purpose: Create and structure tables (<table> for the table itself, <tr> for table rows, <td> for table data cells, and <th> for header cells).
+Use: Display data in a structured tabular format.
+
+25. <em>, <strong>
+Purpose: <em> emphasizes text (typically italicized), and <strong> highlights important text (typically bold).
+Use: Used to indicate the importance of specific words or phrases, with semantic meaning.
+
+
+----------------------------------------
+Locator statergy:
+
+1)id locator:
+The id locator is the most preferred because of its uniqueness, performance, and simplicity.
+It uses the browser's native methods (e.g., document.getElementById()), which are highly efficient.
+Modern browsers are designed to optimize the performance of common operations like By.Id(). 
+By.Id() directly fetches the element(No Need for Traversal) because of constant-time lookups.
+
+2)name locator:
+The name attribute is commonly used in form elements (e.g., <input>, <select>, <textarea>) to identify form fields when the form is submitted.
+It is also used to group related elements, such as radio buttons or checkboxes, where multiple elements share the same name to indicate they belong to the same group.
+Why Duplicates?:
+
+The name attribute is designed to group related elements, so duplicates are intentional and necessary for functionality.
+
+3)class locator:
+The class attribute is used to apply CSS styles or JavaScript behaviors to multiple elements.
+It allows developers to group elements that share similar styling or functionality.
+Why Duplicates?:
+
+The class attribute is meant to be reusable across multiple elements, so duplicates are expected and useful for consistent styling or behavior
+
+Separation of Concerns:
+
+The id attribute is reserved for unique identification, while name and class serve different purposes (grouping and styling).
+
+4)linkText Locator
+What it Does:
+The linkText locator is used to find a hyperlink element by matching its exact visible text.
+
+It is case-sensitive and requires the complete text of the link.
+
+How it Works:
+Selenium searches for an <a> tag whose inner text exactly matches the provided linkText.
+
+
+5)partialLinkText Locator
+What it Does:
+The partialLinkText locator is used to find a hyperlink element by matching a portion of its visible text.
+
+It is also case-sensitive but only requires a substring of the link text.
+
+How it Works:
+Selenium searches for an <a> tag whose inner text contains the provided partialLinkText.
+----------------------------------------
+Selenium Exceptions:
+
+1)the By.className() locator only accepts a single class name. If you pass multiple class names (even if separated by spaces), it will throw an 
+2)Avoiding numbers in IDs makes automation tests stable, maintainable, and reliable!
+Many web applications generate IDs dynamically with numbers (e.g., button_123, input_456).
+These IDs change on each page load, making tests unstable because selectors break when the number changes.
+----------------------------------------
+Steps to inspect the web element:-
+
+1) right click --> click inspect; you can the DOM
+2) fn+ F12 or F12 --> it will open the DOM
+3) Shorcut--> shf+ctrl+i --> it will open the DOM
+4) Shorcut--> shf+ctrl+c --> it will open the DOM along scope/spy tool
+
+
+----------------------------------------
+
+
+To locate a webElement in the DOM
+
+1)inspect the Dom find the attribute
+2)using webdriver findElement(), By.locator--> By.id("CaseSensitive")
+ we should not type it manually , copy and paste it from the DOM
+3)The attribule value should not be the duplicate value
+
+button_123--> day1
+button_6537--> day2
+
+
+
+
+
+
+
