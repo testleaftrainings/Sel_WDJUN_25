@@ -1,0 +1,122 @@
+
+
+Exceptions:
+
+1)InvalidSelectorException
+Definition:
+This exception occurs when the format of a given selector is incorrect or unsupported.
+Common Causes:
+Syntax errors in the selector string.
+Handling Tips:
+Double-check the syntax of your selector.
+
+
+2)NoSuchElementException
+Definition:
+This exception is thrown when an element could not be found on the page.
+It indicates that the search operation did not locate the element within the current webpage.
+Common Causes:
+The element does not exist on the page at the time of search.
+The selector used does not correctly identify the desired element.
+The element is not loaded yet due to web page's dynamic loading or delays.
+Handling Tips:
+Ensure the correctness of the selector.
+Use waits ( implicit) to allow time for the element to load.
+
+3)StaleElementReferenceException
+Definition:
+This exception is thrown when a previously located element is no longer attached to the DOM (Document Object Model).
+It occurs if the web page's content changes, rendering the previously referenced element invalid or outdated.
+Common Causes:
+The DOM has been updated or refreshed after the element was located.
+The element has been removed or replaced in the DOM.
+Actions like navigation, AJAX calls, or page reloads have caused the element reference to become stale.
+Handling Tips:
+Re-locate the element after the DOM update or refresh.
+
+
+-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+JavascriptExecutor
+
+
+
+In Selenium, the JavascriptExecutor interface is used to execute JavaScript code in the context of the browser. Here are the various ways to initialize and use JavascriptExecutor in Selenium Java:
+
+1)Using Explicit Casting
+The most common way to initialize JavascriptExecutor is by explicitly casting the WebDriver instance:
+
+
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+
+2.Direct Use Without a Separate Variable
+You can directly cast and use the JavascriptExecutor without assigning it to a variable
+
+    driver.executeScript(String script, Object... args);
+
+        The executeScript() method in Selenium Java allows you to execute custom JavaScript code directly in the browser during test automation(it will directly make the API CALL). This provides flexibility to perform operations that might not be possible using standard Selenium WebDriver APIs. Below are various use cases for executeScript():
+
+
+1. Interacting with Hidden or Disabled Elements
+
+    Sometimes, elements are not visible or disabled in the DOM but need to be interacted with for testing purposes.
+
+    .executeScript("arguments[0].click();", element);
+
+2. Scrolling the Page
+
+    Scroll the page to a specific position or an element.
+
+        
+        .executeScript("arguments[0].scrollIntoView(true);", element);
+        .executeScript("window.scrollBy(0,1000);");
+            window.scrollBy(x, y) is a JavaScript function that scrolls the document by a given number of pixels relative to the current position:
+
+            x: The number of pixels to scroll horizontally (positive values scroll to the right, negative values to the left).
+            y: The number of pixels to scroll vertically (positive values scroll down, negative values scroll up).
+            In your example:
+
+            x = 0: No horizontal scrolling.
+            y = 1000: Scrolls vertically down by 1000 pixels.
+
+
+3. Retrieving the Page Title or Other Properties
+
+    Get the page title or other JavaScript-accessible properties.
+    String title = (String) ((JavascriptExecutor) driver).executeScript("return document.title;");
+    
+    System.out.println("Page Title: " + title);
+
+4. Handling Alerts
+    Triggering or managing browser alerts.
+
+    driver.executeScript("alert('This is a test alert');");
+
+5. Force Page Refresh or Navigation
+    
+    Force reload or navigate without using WebDriver.
+    driver.executeScript("location.reload();");
+
+6. Manipulating Element Attributes
+    
+    
+    Modify attributes of a DOM element.
+    If sendKeys() is not working means we can go with it 
+
+    driver.executeScript("arguments[0].setAttribute('value', 'New Value');", element);
+
+
++--------------------------------+------------------------------------------------------------------------+------------------------------------------------+
+| Exception Name                 | Reason                                                                | Why JS Click Helps                             |
++--------------------------------+------------------------------------------------------------------------+------------------------------------------------+
+| ElementNotInteractableException| Element in DOM but not visible/enabled (hidden, off-screen)           | JS directly triggers click in DOM              |
+| ElementClickInterceptedException| Another element (popup, header, loader) overlaps target              | JS bypasses visual obstructions                |
+| MoveTargetOutOfBoundsException | Element outside visible screen or not scrolled into view              | JS ignores viewport/screen bounds             |
+| StaleElementReferenceException | DOM changed between locating/clicking (works if re-located)           | JS works after re-location                    |
+| Timeout waiting for click      | .click() waits for conditions that may never complete (JS-heavy UIs)  | JS skips rendering waits                      |
++--------------------------------+------------------------------------------------------------------------+------------------------------------------------+              |
+
+-------------------------------------------------------------------------------------------------------------------
+
