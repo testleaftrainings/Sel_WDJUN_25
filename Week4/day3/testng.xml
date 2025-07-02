@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite" verbose="5">
+  <test thread-count="5" name="FunctionalTC">
+    <classes>
+      <class name="week4.day3.CreateLead"/>
+      <class name="week4.day3.EditLead"/>
+    </classes>
+  </test> <!-- Test -->
+  <test name="SmokeTest">
+  <classes>
+   <class name="week4.day3.LearnTestNG"/>
+  </classes>
+  </test>
+</suite> <!-- Suite -->
