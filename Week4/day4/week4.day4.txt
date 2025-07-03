@@ -1,0 +1,148 @@
+--------------------------------------
+Annotation Attributes
+
+1) alwaysRun
+
+
+For before methods (beforeSuite, beforeTest, beforeTestClass and beforeTestMethod, but not beforeGroups): If set to true, this configuration method will be run regardless of what groups it belongs to. For after methods (afterSuite, afterClass, …​): If set to true, this configuration method will be run even if one or more methods invoked previously failed or was skipped.
+
+
+2) enabled
+
+Whether methods on this class/method are enabled.
+
+3) groups
+
+The list of groups this class/method belongs to.
+
+4) inheritGroups
+
+If true, this method will belong to groups specified in the @Test annotation at the class level.
+
+5) onlyForGroups
+
+Only for @BeforeMethod and @AfterMethod. If specified, then this setup/teardown method will only be invoked if the corresponding test method belongs to one of the listed groups.
+
+6) dataProvider
+
+The name of the data provider for this test method.
+
+7) dataProviderClass
+
+The class where to look for the data provider. If not specified, the data provider will be looked on the class of the current test method or one of its base classes. If this attribute is specified, the data provider method needs to be static on the specified class.
+
+8) dependsOnGroups
+
+The list of groups this method depends on.
+
+9) dependsOnMethods
+
+The list of methods this method depends on.
+
+10) description
+
+The description for this method.
+
+11) expectedExceptions
+
+The list of exceptions that a test method is expected to throw. If no exception or a different than one on this list is thrown, this test will be marked a failure.
+
+12) invocationCount
+
+The number of times this method should be invoked.
+
+13) invocationTimeOut
+
+The maximum number of milliseconds this test should take for the cumulated time of all the invocationcounts. This attribute will be ignored if invocationCount is not specified.
+
+14) priority
+
+The priority for this test method. Lower priorities will be scheduled first.
+
+15) successPercentage
+
+The percentage of success expected from this method
+
+16) singleThreaded
+
+If set to true, all the methods on this test class are guaranteed to run in the same thread, even if the tests are currently being run with parallel="methods". This attribute can only be used at the class level and it will be ignored if used at the method level. 
+Note: this attribute used to be called sequential (now deprecated).
+
+17) timeOut
+
+The maximum number of milliseconds this test should take.
+
+18) threadPoolSize
+
+The size of the thread pool for this method. The method will be invoked from multiple threads as specified by invocationCount. NOTE: this attribute is ignored if invocationCount is not specified
+
+
+
+_______________________________________________________________________________________________
+JavascriptExecutor
+
+
+
+In Selenium, the JavascriptExecutor interface is used to execute JavaScript code in the context of the browser. Here are the various ways to initialize and use JavascriptExecutor in Selenium Java:
+
+1)Using Explicit Casting
+The most common way to initialize JavascriptExecutor is by explicitly casting the WebDriver instance:
+
+
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+
+2.Direct Use Without a Separate Variable
+You can directly cast and use the JavascriptExecutor without assigning it to a variable
+
+    driver.executeScript(String script, Object... args);
+
+        The executeScript() method in Selenium Java allows you to execute custom JavaScript code directly in the browser during test automation(it will directly make the API CALL). This provides flexibility to perform operations that might not be possible using standard Selenium WebDriver APIs. Below are various use cases for executeScript():
+
+
+1. Interacting with Hidden or Disabled Elements
+
+    Sometimes, elements are not visible or disabled in the DOM but need to be interacted with for testing purposes.
+
+    .executeScript("arguments[0].click();", element);
+
+2. Scrolling the Page
+
+    Scroll the page to a specific position or an element.
+
+        
+        .executeScript("arguments[0].scrollIntoView(true);", element);
+        .executeScript("window.scrollBy(0,1000);");
+            window.scrollBy(x, y) is a JavaScript function that scrolls the document by a given number of pixels relative to the current position:
+
+            x: The number of pixels to scroll horizontally (positive values scroll to the right, negative values to the left).
+            y: The number of pixels to scroll vertically (positive values scroll down, negative values scroll up).
+            In your example:
+
+            x = 0: No horizontal scrolling.
+            y = 1000: Scrolls vertically down by 1000 pixels.
+
+
+3. Retrieving the Page Title or Other Properties
+
+    Get the page title or other JavaScript-accessible properties.
+    String title = (String) ((JavascriptExecutor) driver).executeScript("return document.title;");
+    
+    System.out.println("Page Title: " + title);
+
+4. Handling Alerts
+    Triggering or managing browser alerts.
+
+    driver.executeScript("alert('This is a test alert');");
+
+5. Force Page Refresh or Navigation
+    
+    Force reload or navigate without using WebDriver.
+    driver.executeScript("location.reload();");
+
+6. Manipulating Element Attributes
+    
+    
+    Modify attributes of a DOM element.
+    If sendKeys() is not working means we can go with it 
+
+    driver.executeScript("arguments[0].setAttribute('value', 'New Value');", element);
