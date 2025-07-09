@@ -1,0 +1,317 @@
+#############################################################################################
+
+# Steps to do Excel Integration:
+
+1. inside excel program craete one input agrs and pass variable inside workbook
+ 
+(./data/"+fileName+".xlsx)
+ 
+ 
+2. into the BaseClass or PSM  and declare a fileName globally
+ 
+public String fileName; ------------ > Global declaration
+
+3. Move the sendData Method to the BaseClass or PSM 
+
+@DataProvider(name="fetchData")
+public String[][] sendData() throws IOException {
+return ReadExcel.readExcel(fileName); 
+}
+4. Create setValues() inside each testcase and annotate with @BeforeTest and mention the filename here
+
+@BeforeTest
+public void setValues() {
+fileName="EditLead";
+} 
+5. Finally , run from the xml file
+
+
+
+Gobal variables : driver , fileName
+ @BeforeTest-initializing the fileName here
+      @DataProvider
+         @parameters
+           @BeforeMethod- required data for the testcases are collected here -PSM
+                    initializing the driver here
+                @Test
+            @AfterMethod
+
+
+
+
+
+
+
+
+
+###############################
+What is a BDD Framework?
+
+Behavior-Driven Development (BDD) is an agile software development methodology that enhances collaboration between developers, testers, and non-technical stakeholders (like business analysts) to ensure that everyone shares a common understanding of how an application should behave. Here are some key points:
+    
+Focus on Behavior:
+BDD emphasizes specifying the expected behavior of software using natural language. This makes requirements more accessible and understandable to all team members.
+
+Collaboration:
+It promotes close communication among team members, reducing the gap between technical implementation and business requirements.
+
+Living Documentation:
+By writing scenarios in plain language, the test cases serve as documentation that evolves with the application, ensuring that they always reflect the current state of the system.
+
+Shift-Left Testing:
+BDD encourages early testing during the development process, which helps in identifying issues sooner and ensures that the development aligns with business expectations.
+####################################
+ 
+🔹 TDD – Test-Driven Development
+
+Who drives it? Developers
+What comes first? Unit tests before writing actual code.
+
+🔁 Flow:
+Developer writes a failing test → Writes minimum code to pass the test → Refactors the code → Test passes → Code is complete.
+
+⛳ Connection to Shift Left:
+
+1)Testing starts even before implementation.
+
+2)Bugs are caught early in the dev phase, reducing cost and rework.
+
+Example: Writing a failing test case → writing code to pass the test → refactoring.
+
+🔧 Tools:
+JUnit, TestNG, Mockito
+
+🔹 ATDD – Acceptance Test-Driven Development
+
+Who drives it? Collaboration of Dev, QA, and Business
+What comes first? Acceptance criteria (tests) are defined before dev begins.
+
+🔁 Flow:
+→ Product Owner defines acceptance → Dev builds → Test validates → Feature accepted
+
+⛳ Connection to Shift Left:
+
+1)Tests are aligned with business goals from the beginning.
+
+2)Encourages early collaboration.
+
+3)Ensures development is testable and meets user expectations.
+
+🔧 Tools:
+FitNesse, Robot Framework, Cucumber
+
+
+
+🔹 BDD – Behavior-Driven Development
+
+Who drives it? Product Owners, Testers, and Developers
+What comes first? User behaviors described in Gherkin format (Given-When-Then)
+
+🔁 Flow:
+→ Discuss behaviors → Write scenario in Cucumber → Dev writes code to satisfy it
+
+⛳ Connection to Shift Left:
+
+1)Encourages conversation and shared understanding before coding.
+
+2)Enhances test coverage early in development.
+
+3)Scenarios written in plain language → drives both development and testing.
+
+🔧 Tools:
+Cucumber, JBehave, SpecFlow
+
+
+
+####################################
+
+
+How Does Cucumber Help Implement BDD?
+Cucumber is a popular tool that facilitates the implementation of BDD by providing a structured yet flexible approach to writing and executing tests. Here’s how Cucumber supports BDD:
+
+Gherkin Syntax:
+Gherkin is a domain-specific language (DSL) designed specifically for Behavior-Driven Development (BDD). It enables writing test scenarios in a plain, structured, and human-readable format, bridging the gap between technical teams and non-technical stakeholders.
+
+Feature Files:
+
+
+These files contain scenarios that describe the expected behavior of the application using keywords makes it easy to understand what is being tested and why.
+
+
+
+
+Keywords Summary :
+
+#Feature: List of scenarios.
+#Scenario: Business rule through list of steps with arguments.
+#Given: Some precondition step
+#When: Some key actions
+#Then: To observe outcomes or validation
+#And,But: To enumerate more Given,When,Then steps
+#Scenario Outline: List of steps for data-driven as an Examples and <placeholder>
+#Examples: Container for s table
+#Background: List of steps run before each of the scenarios
+#""" (Doc Strings)
+#| (Data Tables)
+#@ (Tags/Labels):To group Scenarios
+#<> (placeholder)
+#""
+## (Comments)
+
+Step Definitions:
+Each line in a Gherkin scenario is linked to a corresponding code block (step definition). These methods, written in a programming language like Java, perform the actual testing actions (e.g., interacting with the application, verifying outcomes).
+
+Integration with Testing Frameworks:
+Cucumber integrates seamlessly with frameworks such as JUnit, TestNG (in Java) to run tests. This integration allows teams to leverage familiar testing tools while using a BDD approach.
+
+Hooks for Pre/Post Conditions:
+Cucumber provides hooks (e.g., @Before and @After) to run code before and after each scenario. This is useful for setup (like launching a browser) and teardown tasks (like taking screenshots or closing connections).
+
+Living Documentation & Reporting:
+Since scenarios are written in plain language, they double as documentation. Additionally, Cucumber’s reporting features (like JVM or HTML reports) help teams track test execution and quality metrics.
+
+################################################################
+
+History of Cucumber
+Cucumber’s Evolution:
+
+Origins in Ruby (2008):
+Cucumber was created by Aslak Hellesoy in 2008 as an open-source tool for acceptance testing(UAT), primarily targeting the Ruby community. It was developed in response to the growing need for a more collaborative testing approach that would make test scenarios understandable to non-programmers.
+
+Rise of BDD:
+The emergence of BDD, driven by thought leaders like Dan North, influenced Cucumber’s development. BDD’s emphasis on clear communication and behavior specification aligned perfectly with what Cucumber was designed to do.
+
+Expansion to Multiple Languages:
+Recognizing the broader appeal of BDD, Cucumber evolved beyond Ruby. Implementations like Cucumber-JVM were introduced, allowing teams working in Java and other languages to adopt BDD practices. This expansion helped Cucumber become a versatile and widely adopted testing tool across different development ecosystems.
+
+
+
+In Summary
+
+BDD is a methodology that emphasizes collaboration and shared understanding through behavior-focused, human-readable test scenarios.
+Cucumber implements BDD by using Gherkin syntax to write feature files, mapping these to executable code with step definitions, and integrating with standard testing frameworks. It also provides hooks and detailed reporting to streamline the testing process.
+Cucumber’s History begins in 2008 within the Ruby community, growing alongside the BDD movement and expanding its support to multiple programming languages, making it a cornerstone tool in modern agile testing practices.
+
+####################################
+
+-----------------------------------------------------------------------------------------------------------------------
+| Layer               | Location in Maven Project            | Reason for this Location                                   |
+----------------------------------------------------------------------------------------------------------------------
+| Feature Files       | src/test/java/features/             | - Maven treats src/test/java/ as the standard        |
+| (.feature)         |                                      |   folder for test resources.                              |
+|                    |                                      | - Feature files are not Java code but test data, so they  |
+|                    |                                      |   do not need to be compiled.                            |
+|                    |                                      | - Cucumber automatically looks for .feature files here.  |
+---------------------------------------------------------------
+| Step Definitions   | src/test/java/stepDefinitions/      | - Step definitions are Java code and must be compiled,   |
+|                    |                                      |   so they go inside src/test/java/.                      |
+|                    |                                      | - Keeping them separate from feature files maintains     |
+|                    |                                      |   separation of concerns.                                |
+|                    |                                      | - Makes it easier to debug and maintain test logic.      |
+---------------------------------------------------------------
+| Test Runner        | src/test/java/runners/              | - The test runner (TestNG, JUnit, or Cucumber.class) is  |
+|                    |                                      |   an entry point for execution.                          |
+|                    |                                      | - Needs to be inside src/test/java/ because it's Java    |
+|                    |                                      |   code and should be compiled.                          |
+|                    |                                      | - Placing it in runners/ keeps it separate from step     |
+|                    |                                      |   definitions.                                           |
+---------------------------------------------------------------
+| Base Class        | src/test/java/base/                 | - The BaseClass is a common utility class (e.g.,        |
+|                   |                                      |   WebDriver setup).                                      |
+|                   |                                      | - Placing it in base/ prevents duplication and allows   |
+|                   |                                      |   all step definitions to inherit from it.              |
+|                   |                                      | - Ensures better modularity and reusability.            |
+---------------------------------------------------------------
+
+
+###################################################################################
+
+$$$Feature Files:
+These files contain scenarios that describe the expected behavior of the application using keywords such as
+
+Feature:
+Describes the high-level functionality or user story. It sets the overall context for what is being automated.
+
+Background:
+Contains common steps or preconditions that are run before each scenario in the feature. It acts as the pre-match routine for every test.
+
+Scenario:
+Defines a specific test case or example of behavior. It outlines a clear, step-by-step plan for one particular situation.
+
+Scenario Outline:
+Similar to a Scenario but used to run the same test steps with different sets of input data. It helps in testing variations of a scenario.
+
+Examples:
+A table of data provided for a Scenario Outline, offering multiple sets of values to test the same scenario under different conditions.
+
+Given:
+Sets up the initial context or preconditions for the test, ensuring that the environment is ready before actions are performed.
+
+When:
+Describes the action or event that triggers the behavior within the test scenario.
+
+Then:
+Specifies the expected outcome or result after the action is taken.
+
+And:
+Connects additional steps to the Given, When, or Then clauses, adding further details or conditions.
+
+But:
+Introduces exceptions or alternative outcomes to the main steps, describing what should happen if conditions change.
+
+Data Tables:
+Provide structured input data for the scenario. They are used to supply detailed metrics or multiple parameters in a tabular format.
+
+Doc Strings:
+Allow the inclusion of multi-line text blocks for detailed instructions or additional context, similar to extended notes.
+
+Comments:
+Non-executable lines (usually starting with #) that offer extra context or clarifications without affecting the test execution.
+
+How to name a feature file :
+
+Best Practices
+
+✅ Avoid spaces and special characters (use - instead).
+✅ Use meaningful and readable names to reflect the purpose.
+✅ Keep file names under 30-40 characters for readability.
+✅ Organize feature files logically (e.g., src/test/java/features/user-login.feature).
+
+
+| Element                     | Casing Style  | Example                                      |
+|-----------------------------|-------------- |----------------------------------------------|
+| Feature Name                | Title Case    | Feature: User Authentication                |
+| Scenario Name               | Title Case    | Scenario: Successful Login with Valid Credentials |
+| Step Definitions  	        | Sentence case | Given the user is on the login page        |
+(Given/When/Then/And/But)   
+| Tags 			      | PascalCase    | @SmokeTest @RegressionTest       	|
+(@SmokeTest, @RegressionTest)
+
+
+Explanation of Casing Standards
+
+✅ Feature & Scenario Titles → Title Case
+Use Title Case (capitalize first letter of each major word).
+This improves readability and follows software documentation best practices.
+
+example: 
+
+Feature: User Authentication  
+Scenario: Successful Login with Valid Credentials 
+
+
+✅ Steps (Given/When/Then/And/But) → Sentence case
+
+proper nouns should be capitalized.
+Keep the rest of the sentence in lowercase, unless referencing proper nouns.
+
+Example:
+
+When the user enters the username as "demosalesmanager"
+When the user enters the password as "crmsfa"
+And the user clicks the login button
+Then the user should be redirected to the homepage
+
+------------------------------------------------------------------
+
+
