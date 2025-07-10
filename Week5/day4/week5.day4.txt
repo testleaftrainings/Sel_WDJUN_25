@@ -1,0 +1,309 @@
+
+
+$$$Base Class
+
+Definition:
+
+A Base Class is a superclass that contains common methods, configurations, and utilities that are shared across different step definition classes. It centralizes functionalities like browser setup, teardown methods, and utility functions, ensuring that repetitive code is written only once.
+
+Purpose:
+
+Code Reusability: By placing shared functionalities in the Base Class, you avoid duplicating code across multiple classes.
+
+Maintainability: Updates or changes (for example, a change in browser configuration) need to be made in just one place, simplifying maintenance.
+
+Consistency: Ensures that all tests start with the same setup and configurations, leading to uniform behavior across the test suite.
+
+##################################################################################
+
+----------------------------------------------------------------------------------------------------------------------
+| Layer               | Location in Maven Project          |    Reason for this Location                              |
+---------------------------------------------------------------------------------------------------------------------
+| Base Class        | src/test/java/base/                  | - The BaseClass is a common utility class (e.g.,         |
+|                   |                                      |   WebDriver setup).                                     |
+|                   |                                      | - Placing it in base/ prevents duplication and allows   |
+|                   |                                      |   all step definitions to inherit from it.              |
+|                   |                                      | - Ensures better modularity and reusability.            |
+--------------------------------------------------------------------------------------------------------------------- 
+
+static keyword
+ 
+single memory reference - share the memory as single all the object reference across the project
+inside the non static methods it allows all the members of the class (static variable , non-static variable, static method, non-static method) directly without the help of object reference.
+inside the static method it allow to call only the static members(static variable and static method) without object reference
+
+
+
+###################################################################################
+$$$Feature Files:
+These files contain scenarios that describe the expected behavior of the application using keywords such as
+
+Feature:
+Describes the high-level functionality or user story. It sets the overall context for what is being automated.
+
+Background:
+
+Contains common steps or preconditions that are run before each scenario in the feature. It acts as the pre-match routine for every test.
+
+Scenario:
+Defines a specific test case or example of behavior. It outlines a clear, step-by-step plan for one particular situation.
+
+Scenario Outline:
+Similar to a Scenario but used to run the same test steps with different sets of input data. It helps in testing variations of a scenario.
+
+Examples:
+A table of data provided for a Scenario Outline, offering multiple sets of values to test the same scenario under different conditions.
+
+Given:
+Sets up the initial context or preconditions for the test, ensuring that the environment is ready before actions are performed.
+
+When:
+Describes the action or event that triggers the behavior within the test scenario.
+
+Then:
+Specifies the expected outcome or result after the action is taken.
+
+And:
+Connects additional steps to the Given, When, or Then clauses, adding further details or conditions.
+
+But:
+Introduces exceptions or alternative outcomes to the main steps, describing what should happen if conditions change.
+
+Data Tables:
+Provide structured input data for the scenario. They are used to supply detailed metrics or multiple parameters in a tabular format.
+
+Doc Strings:
+Allow the inclusion of multi-line text blocks for detailed instructions or additional context, similar to extended notes.
+
+Comments:
+Non-executable lines (usually starting with #) that offer extra context or clarifications without affecting the test execution.
+
+How to name a feature file :
+
+Best Practices
+
+✅ Avoid spaces and special characters (use - instead).
+✅ Use meaningful and readable names to reflect the purpose.
+✅ Keep file names under 30-40 characters for readability.
+✅ Organize feature files logically (e.g., src/test/resources/features/user-login.feature).
+
+
+| Element                     | Casing Style  | Example                                      |
+|-----------------------------|-------------- |----------------------------------------------|
+| Feature Name                | Title Case    | Feature: User Authentication                |
+| Scenario Name               | Title Case    | Scenario: Successful Login with Valid Credentials |
+| Step Definitions  	      | Sentence case | Given the user is on the login page        |
+(Given/When/Then/And/But)   
+| Tags 			      | PascalCase    | @SmokeTest @RegressionTest       	|
+(@SmokeTest, @RegressionTest)
+
+
+Explanation of Casing Standards
+
+✅ Feature & Scenario Titles → Title Case
+Use Title Case (capitalize first letter of each major word).
+This improves readability and follows software documentation best practices.
+
+example: 
+
+Feature: User Authentication  
+Scenario: Successful Login with Valid Credentials 
+
+
+✅ Steps (Given/When/Then/And/But) → Sentence case
+
+The first letter should be capitalized.
+Keep the rest of the sentence in lowercase, unless referencing proper nouns.
+
+Example:
+
+When the user enters the username as "demosalesmanager"
+When the user enters the password as "crmsfa"
+And the user clicks the login button
+Then the user should be redirected to the homepage
+
+
+
+
+###############################
+
+
+Step Definitions:
+
+Each line in a Gherkin scenario is linked to a corresponding code block (step definition). These methods, written in a programming language like Java, perform the actual testing actions (e.g., interacting with the application, verifying outcomes).
+
+Hooks for Pre/Post Conditions:
+Cucumber provides hooks (e.g., @Before and @After) to run code before and after each scenario. This is useful for setup (like launching a browser) and teardown tasks (like taking screenshots or closing connections).
+
+
+
+###################################################################################
+
+$$$Hooks
+
+Hooks are special methods in Cucumber that execute at specific points during the test lifecycle. They help set up preconditions or perform cleanup actions without cluttering the step definitions.
+
+
+Hooks Implementation
+Cucumber annotations -
+	- @Before -> Before annotation execute before executing each scenario 
+	- @After -> After annotation execute after each scenario
+        - @BeforeStep - It will execute before each test step 
+        - @AfterStep - It will execute after each test step
+
+
+1)@Before Hook
+Purpose:
+
+Execution Timing: Runs before each scenario.
+
+Usage:
+
+Initializes test prerequisites, such as launching a browser.
+Sets up test data or configures the environment.
+Prepares the system for the scenario that is about to run.
+
+Cricket Analogy:
+
+A)Think of the @Before hook as the pre-match warm-up and briefing session:
+
+Pre-Match Warm-Up: Just as a cricket team warms up to get into the right physical and mental state before a match, the @Before hook sets up the necessary environment (like launching a browser or initializing data) before any test scenario starts.
+
+Team Briefing: The coach gathers the team to review the game plan, ensuring everyone knows their role and responsibilities—similar to how the @Before hook ensures that all prerequisites are met before the scenario runs.
+
+2)@After Hook
+Purpose:
+Performs cleanup actions after each scenario.
+
+Execution Timing:
+
+Runs after each scenario, regardless of whether it passed or failed.
+
+Usage:
+
+Closes the browser or driver instance.
+Captures screenshots on failure (optional).
+Clears or resets test data/environment.
+Logs test result status.
+
+Cricket Analogy:
+
+Imagine the @After hook as the post-match debrief and cleanup:
+
+Post-Match Cool Down: After the match, players cool down, stretch, and review their performance. This is akin to the @After hook’s role in tidying up after a test scenario—closing sessions, collecting data (like screenshots), and resetting the state.
+
+Debriefing Session: The coach holds a meeting to discuss what went well and what needs improvement, which parallels how the @After hook gathers results and cleans up, ensuring the next test (or match) starts fresh.
+
+3)@BeforeStep (Hook)
+Purpose:
+Executes setup actions before each step within a scenario.
+
+Execution Timing:
+
+Runs before every step in a scenario.
+
+Usage:
+
+Log step details before execution.
+Set up preconditions required by each step.
+Start step-level timers or initialize utilities.
+
+4)@AfterStep (Hook)
+Purpose:
+Performs post-processing or cleanup after each step in a scenario.
+
+Execution Timing:
+
+Runs after every step in a scenario.
+
+Usage:
+
+Capture screenshots after each step (commonly used for debugging).
+Log step outcomes.
+Collect or update test execution metrics.
+
+####################################################################
+Execution flow with hooks annotations
+  -> @Before
+     -> Background keyword
+      -> Scenario /Scenario Outline -> @BeforeStep -> @AfterStep
+        -> @After
+
+Steps to implement hooks annotations
+  1. create a class as HooksImplementation under hooks package
+  2. Declare two methods preCondition and postCondition with Hooks/cucumber annotations @Before and @After
+  3. HooksImplementation should inherit ProjectSpecificMethod
+  4. In the runner hooks package also include in glue attribute.
+
+------------------------------------------------------------------------------
+🔹 Why AbstractTestNGCucumberTests is implemented in the runner class?
+
+When you write a Cucumber + TestNG runner class, you typically extend AbstractTestNGCucumberTests to:
+
+✅ Enable Cucumber Feature Execution with TestNG Lifecycle
+
+This abstract class provides the integration layer between Cucumber scenarios and TestNG's execution engine.
+
+
+---
+
+🔧 What does it do internally?
+
+1. Reads your feature files
+
+
+2. Runs the scenarios via TestNG’s execution flow
+
+
+3. Maps scenarios to TestNG tests
+
+
+4. Supports parallel execution (if enabled)
+
+
+5. Provides hooks for listeners, reports, etc.
+
+
+
+
+---
+
+🧩 Typical Runner Class Example:
+
+@CucumberOptions(
+    features = "src/test/java/features",
+    glue = "stepdefinitions",
+    monochrome = true
+)
+public class TestRunner extends AbstractTestNGCucumberTests {
+}
+
+
+---
+
+🔍 Without extending AbstractTestNGCucumberTests?
+
+Your feature files and step definitions will not be automatically linked or executed through TestNG. You’d have to write the full glue code manually, defeating the purpose of integration.
+
+----------------------------------------------------------
+TestNG Implementation in Cucumber
+
+
+1)Remove the Hooks annotations @Before and @After
+2)In ProjectSpecificMethod Declare two methods precondition and postCondition with TestNG annotations @BeforeMethod and @AfterMethod
+3)Runner class should inherit ProjectSpecificMethod
+4)ProjectSpecificMethod should inherit AbstractTestNGCucumberTests
+
+
+
+-----------------------------------------------------------
+Summary
+Each component in Cucumber BDD with Java is designed to promote clarity, reusability, and maintainability:
+
+1)Maven and pom.xml manage your project and its dependencies.
+2)The Test Runner Class (using @RunWith and @CucumberOptions) links feature files to the underlying code.
+3)Feature Files written in Gherkin offer a readable description of the test scenarios.
+4)Step Definitions map these scenarios to executable code.
+5)Hooks (@Before and @After) manage pre- and post-test actions.
+6)Base ensure that common functions.
+7)Report Generation captures and presents the results of test executions in both JVM and HTML formats, ensuring stakeholders have access to detailed test insights.
