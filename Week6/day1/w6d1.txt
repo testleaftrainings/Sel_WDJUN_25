@@ -1,0 +1,150 @@
+
+#######################################################
+
+
+most commonly seen exceptions in Cucumber
+
+✅ 1. io.cucumber.java.PendingException
+
+Cause: Step is defined but not yet implemented, or intentionally marked as pending.
+
+throw new pendingException();
+
+Fix: Implement the missing step definition or remove the throw new PendingException() line.
+
+✅ 2. cucumber.runtime.CucumberException
+
+Cause: General internal Cucumber error, often due to step definition issues, hooks failures, or misconfigurations.
+
+Fix: Check the error message for the actual root cause (e.g., missing glue code or faulty hooks).
+
+✅ 3. UndefinedStepException / "Undefined Step" warning in console
+
+Cause: The step in the .feature file does not have a matching step definition in the glue code.
+
+Fix: Implement the missing step using the suggested snippet from the console.
+
+✅ 4. AmbiguousStepDefinitionsException
+
+Cause: When multiple steps partially match the same step line (especially without $), Cucumber throws an AmbiguousStepDefinitionsException.
+
+Fix: Refactor step definitions to ensure only one matches each step. Avoid overlapping regular expressions.
+
+✅ 5. DuplicateStepDefinitionException
+
+Cause: Exact same step regex is defined more than once.
+
+Fix: Remove or combine the duplicate step definitions.
+
+✅ 6. ClassNotFoundException / NoClassDefFoundError
+
+Cause: Missing dependencies (Cucumber, Selenium, TestNG, etc.)
+
+Fix: Add the required dependencies in your pom.xml or build.gradle.
+
+✅ 7. IllegalArgumentException
+
+Cause: Data passed from feature files (via DataTables, parameters, etc.) is in the wrong format or null.
+
+Fix: Validate the data format and check argument types in step methods.
+
+
+
+-----------------------------------------------------------
+###########################################################
+-----------------------------------------------------------
+Dynamic Parameterization : 
+________________________________________
+🧩 1. Cucumber Expressions vs Regex
+
+Cucumber supports two ways to write step definitions:
+
+Type Example         | in StepDef        | Behavior
+---------------------------------------------------------------
+Cucumber Expression  | {int}, {string}   | Clean syntax, auto type-conversion
+Regex                | (.+), (\\d+), (.*)| Classic Java regex, more flexible but verbose
+
+
+📌 2. Matching {int} vs (.*) or (.+)
+
+Pattern             | Description                        | Accepts empty input? | Data type
+-----------------------------------------------------------------------------------------
+{int}               | Cucumber expression for integers   | ❌ No                | int / Integer
+{string}            | Cucumber expression for strings    | ✅ Yes               | String
+(.*) (regex)        | Regex match: 0 or more characters  | ✅ Yes               | String
+(.+) (regex)        | Regex match: 1 or more characters  | ❌ No                | String
+
+
+🔄 3. int vs Integer in Step Definitions
+
+Type       | Description           | Accepts null? | Use When
+-----------------------------------------------------------------
+int        | Primitive type        | ❌ No          | Input is always present & numeric
+Integer    | Wrapper class for int | ✅ Yes         | Input may be optional/missing
+
+
+🧪 4. Examples Table with Empty or Optional Data
+
+Scenario Outline: Phone input
+  When The user enters phoneno as <phoneno>
+
+Examples:
+  | phoneno    |
+  | 882578     |
+  |            |  # Empty input
+
+🧠 5. Best Practice Summary
+
+Use Case                          | Pattern to Use                          | StepDef Param Type
+-------------------------------------------------------------------------------------------
+Always numeric and required       | "The user enters phoneno as {int}"      | int or Integer
+Might be empty or optional       | "The user enters phoneno as {string}"   | String
+Want clean + type-safe           | Use Cucumber Expressions ({int}, {string}) | As per placeholder
+
+
+✅ Final Recommendation
+
+For 99% of cases:
+• Use Cucumber Expressions ({int}, {string})
+• Handle optional input with {string} and null/empty checks
+• Avoid int unless value will always be present
+
+___________________________________________________________
+✅ Best Practice
+
+Always end regex-based Cucumber steps with $ unless you intentionally want to allow "extra" text after the match.
+
+The $ symbol in a Cucumber step definition regex has a specific purpose — it anchors the end of the string, meaning it ensures the step matches only when the entire step matches the pattern exactly.
+
+🔍 Why should we use $ at the end of regex-based Cucumber steps?
+
+✅ 1. Prevents Unintended Matches
+Without $, the step may match more than you intend, leading to ambiguous or incorrect behavior.
+
+✅ 2. Avoids AmbiguousStepDefinitionsException
+When multiple steps partially match the same step line (especially without $), Cucumber throws an AmbiguousStepDefinitionsException.
+
+
+✅ Recommended:
+
+@When("The user enters phoneno as (.*)$")
+
+This makes your step definitions:
+
+1)Precise
+
+2)Predictable
+
+3)Less error-prone
+
+____________________________________________________________
+Summary
+Each component in Cucumber BDD with Java is designed to promote clarity, reusability, and maintainability:
+
+1)Maven and pom.xml manage your project and its dependencies.
+2)The Test Runner Class (@CucumberOptions) links feature files to the underlying code.
+3)Feature Files written in Gherkin offer a readable description of the test scenarios.
+4)Step Definitions map these scenarios to executable code.
+5)Hooks (@Before and @After) manage pre- and post-test actions.
+6)Base ensure that common functions.
+7)Report Generation captures and presents the results of test executions in both JVM and HTML formats, ensuring stakeholders have access to detailed test insights.
