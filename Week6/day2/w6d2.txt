@@ -1,0 +1,39 @@
+--------------------------------------------------------------------------------
+
+✅ Use Cases in Automation Testing (especially with Selenium + TestNG/Cucumber)
+
+1. Final Variables – Define Constants
+
+You often use final variables to store reusable constants like URLs, locators, file paths, etc.
+
+🔧 Why helpful?
+
+Prevents accidental modification of critical values.
+
+
+2. Final Methods – Protect Core Utility Logic
+
+You can use final for common utility/helper methods (e.g., reading Excel, logging) to avoid overriding and altering stable implementations.
+
+🔧 Why helpful?
+
+Prevents framework-level utility functions from being overridden and breaking behavior.
+
+3. Final Classes – Framework Core Components
+
+Mark  classes like  Hooks as final if you don't want them to be extended.
+
+###################################################################################
+
+🔧 Where super helps in Automation (with examples)
+
+1. Calling a Parent Method
+Useful when child class overrides a method, but still needs to reuse parent logic.
+
+🔍 Why it's helpful?
+
+Allows extending or enhancing base functionality instead of rewriting it.
+
+2. Accessing Shadowed Variables
+
+If a child class defines a variable with the same name as the parent, super helps access the parent's version.
