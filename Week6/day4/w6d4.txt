@@ -1,0 +1,288 @@
+
+###########################################
+
+
+Cucumber with POM:
+------------------
+ - Create 4 packages
+     - base
+        Create BaseClass with common methods
+        BaseClass should extend AbstractTestNGCucumberTests
+     - features
+         Create feature files
+     - pages
+        Create classes for each page and each page should extend BaseClass
+     - runner
+        Create CucumberRunner class and , mention glue="pages"
+        The runner class should extend BaseClass
+
+###########################################
+Thread :
+
+testxml -> threadcount
+java--> Thread.sleep()
+testNG attributes--> threadPoolsize
+
+
+
+The Thread class in Java is used for creating and managing threads, which enable concurrent execution of tasks. 
+
+Why is one thread executing fully before the other?
+
+1)Thread Scheduling is Non-Deterministic
+
+The JVM assigns CPU time to threads based on the OS's thread scheduler.
+
+Sometimes, the OS may allow Thread-0 to complete all its iterations before giving CPU time to Thread-1.
+
+2)CPU Time Slice Allocation
+
+Some OS schedulers may allocate longer time slices to a thread before switching to another.
+
+This could cause one thread (Thread-0) to run completely before Thread-1 starts.
+
+3)System Load and Thread Priority
+
+If the system is lightly loaded, the OS may not interrupt the running thread until it finishes.
+
+The Thread class uses default priority (5), which might allow one thread to complete before the other gets CPU time.
+
+
+Is This Behavior Guaranteed?
+      No! If you run the program multiple times, you might see different outputs where Thread-0 and Thread-1 interleave. The execution order depends on the JVM and OS.
+
+When running TestNG tests in parallel mode, multiple test methods or classes execute concurrently using separate threads. The TestNG XML configuration defines the parallel execution mode (methods, classes, tests, or suites).
+
+
+Step-by-Step Execution
+1️⃣ TestNG starts execution and creates multiple threads (as per thread-count).
+2️⃣ Each test method is assigned to a separate thread for parallel execution.
+3️⃣ Threads execute methods independently, meaning TestClassA.test1 and TestClassB.test1 can run at the same time.
+4️⃣ Once a thread completes one test method, it moves to the next available test method.
+5️⃣ Test execution completes when all threads finish executing their assigned test methods.
+
+
+
+###########################################
+
+Pom-ThreadLocal:
+---------------
+
+What is ThreadLocal in Java?
+ThreadLocal<T> is a Java class that provides thread-local variables. These variables are isolated per thread, meaning each thread has its own copy, preventing conflicts when multiple threads access shared data(pages).Each thread holds an implicit reference to its copy of a thread-local
+ * variable as long as the thread is alive.
+ThreadLocal Used to create thread local variables. Each thread will have its own 
+copy of a thread local variable.
+
+
+
+
+
+private- a variable which is accessible only within that class
+   static-one instance will be shared among all the classes
+      final-variable once initialized cannot be changed.
+
+
+Steps: 1. private static final ThreadLocal<RemoteWebDriver> rd = new ThreadLocal<RemoteWebDriver>();
+
+ private:
+   It can be accessed only within the class
+ static final:
+    static+final = constant
+ ThreadLocal:
+   It is a class that provides thread-local variable
+
+✅ Why private members are accessed using public methods
+In Java, the reason we make variables private and access them via public getter/setter methods is to follow the Object-Oriented Programming principle of Encapsulation.
+
+🔒 1. What is Encapsulation?
+Encapsulation is the concept of hiding internal object details and exposing only what's necessary to the outside world.
+
+🎯 Goal:
+Restrict direct access to the object's internal state.
+
+Provide controlled, safe access through public methods.
+
+🧱 2. Why Use private + public Combo?
+Reason			|	Explanation
+-----------------------------------------------------------------------------------------------
+✅ Data Protection	|	Prevents unwanted or accidental modification of internal data.
+✅ Controlled Access	|	You decide who can read/write and how.
+✅ Validation Logic	|	Setters can include validation before setting values.
+✅ Future Flexibility	|	You can change internal implementation without affecting external code.
+✅ Read-Only		|	You can expose only get or only set if needed.
+   or Write-Only Access
+
+2. Use setter and getter methods
+     Sets the current thread's copy of this thread-local variable
+
+      public void setDriver(RemoteWebDriver driver) {
+	rd.set(driver);
+
+}
+ Returns the value in the current thread's copy of this thread-local variable   
+public RemoteWebDriver getDriver() {
+	return rd.get();
+}
+
+@BeforeMethod
+public void precondition(){
+  setDriver();
+  then replace driver variable into getDriver()
+  getDriver().manage.window.maximize();
+}
+
+
+
+
+
+For TestNG _POM : - with driver as static -> sequential execution is possible
+ - To have sequential and parallel execution declare Parameterized Constructor in each pages
+
+For Cucumber_POM: 
+- Constructor should not be defined 
+- With driver as static 
+-> sequential execution is possible
+
+
+
+###########################################
+
+
+POM with Excel Integration:
+---------------------------
+Create data folder and have the excelsheets inside Login 
+Create a package called utils and have the ReadExcel java class inside
+Create sendData() and annotate with DataProvider and call the readExcel() and return
+Replace all the hardcoded data with input arguments in the required pages
+In the testClasses, use dataProvider attribute to receive the data and pass input arguments in the test method.
+Create setValues() in each testclass to mention the fileName and annotate with @BeforeTest
+
+How to Parameterize the data?
+	  1)Create a new package(utils) and copy the ReadExel class from the previous project or package 
+	  and paste it here
+	  2)Create a data folder and create excel sheets
+	  3)Declare the filedata globally in baseclass
+	  4)Create a method for @DataProvider and call the ReadExel class
+	  5)Integrate @Test with dataProvider attribute
+	  6)Pass the inputs as arguments in the testcase method level and replace the hardcoded values
+	  7)In the testcase create a method to mention the ExcelFileName and annotate with @BeforeTest
+
+
+
+###########################################
+
+
+Extent Report Introduction
+--------------------------------------------------------------------------------------
+
+
+<dependency>
+    <groupId>com.aventstack</groupId>
+    <artifactId>extentreports</artifactId>
+    <version>3.1.5</version>
+</dependency>
+
+
+
+
+
+
+
+
+
+Basic Report: 
+
+ExtentReports:
+
+
+-Extenthtmlreporter--> used to create physical HTML report
+         -ExtentReports-----> to capture the automation data and attach to physical file
+                  -ExtentTest---> To create TC in report and capture TC status
+-MediaEntityBuilder----> To attach Screenshot to report
+
+
+
+
+
+
+
+Steps to Generate Extent Report
+
+Step 1: Set Physical Report Path
+
+Example Path: Right-click the project → New → Folder → Name it as "reports".
+
+ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("./reports/result.html");  
+
+// To keep the history 
+htmlReporter.setAppendExisting(true); 
+ 
+
+
+Step 2: Create ExtentReports Object
+
+ExtentReports extent = new ExtentReports(); 
+ 
+Step 3: Attach Reporter to ExtentReports
+
+extent.attachReporter(htmlReporter);  
+
+Step 4: Create a Test & Assign Details
+
+ExtentTest test1 = extent.createTest("CreateLead", "Create Lead with mandatory info");  
+test1.assignCategory("Sanity");  
+test1.assignAuthor("Bhuvanesh");  
+
+
+
+Step 5: Add Test Logs (Pass/Fail Status)
+
+test1.pass("Enter username");  
+test1.pass("Enter password");  
+test1.fail("Click Login button");  
+
+Step 6: Flush the Report (Mandatory)
+
+extent.flush();  
+---------------------------------------------------------
+create a unique name for report:
+
+using LocalDateTime and DateTimeFormatter java class.
+
+-----------------------------------------------------------------
+| Pattern | Symbol Description                  | Example Output|
+|---------|-------------------------------------|---------------|
+| yyyy    | 4-digit year                        | 2025          |
+| yy      | 2-digit year                        | 25            |
+| MMMM    | Full month name                     | March         |
+| MMM     | Abbreviated month name              | Mar           |
+| MM      | 2-digit month (01-12)               | 03            |
+| M       | Month (1-12)                        | 3 (March)     |
+| dd      | 2-digit day (01-31)                 | 26            |
+| d       | Day (1-31)                          | 5             |
+| HH      | 2-digit hour (00-23, 24-hour format)| 18            |
+| hh      | 2-digit hour (01-12, 12-hour format)| 06            |
+| mm      | 2-digit minute (00-59)              | 30            |
+| ss      | 2-digit second (00-59)              | 45            |
+| SSS     | 3-digit millisecond                 | 789           |
+| a       | AM/PM marker                        | PM            |
+| E       | Day of week (short)                 | Wed           |
+| EEEE    | Full day of week                    | Wednesday     |
+| zzz     | Timezone abbreviation               | IST           |
+| Z       | Timezone offset                     | +0530         |
+-----------------------------------------------------------------
+Example Combinations:
+
+yyyy-MM-dd HH:mm:ss → 2025-03-26 18:30:45
+
+dd/MM/yyyy hh:mm a → 26/03/2025 06:30 PM
+
+EEE, MMM dd, yyyy → Wed, Mar 26, 2025
+
+Notes:
+
+Case Sensitivity: Patterns like MM (month) vs mm (minutes) are case-sensitive.
+
+
+###########################################
